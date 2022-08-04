@@ -1,0 +1,58 @@
+/**
+       *时间:2022/06/22
+       *作者:songyf
+       *项目:oa
+       */
+
+ /*基础样式*/
+html, body, #app, *{margin: 0 ;padding: 0;}
+html, body, #app, .wrap{height: 100%;}
+a{text-decoration:none;color:#333333;}
+body,html,#app{height: 100%; font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,textarea,p,blockquote,th,td,input,button,span{font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;}
+.fl{float: left;}
+.fr{float: right;}
+.tl{text-align: left;}
+.tr{text-align: right;}
+.clear{clear: both;}
+.center{text-align: center}
+.line-height{line-height: 30px;}
+.mt20{margin-top: 20px;}
+.va{vertical-align: middle}
+.pointer{cursor: pointer}      
+  /*页面样式*/
+.wrap{width: 100%; height: 100%; overflow: auto; background: #f0f2f5;}
+.main{width: 1100px;  overflow: visible;  min-width: 1100px; min-height: calc(100% - 206px); margin: 15px auto; background-color: #fff;}
+.content{width: 100%; height: 100%; padding: 0 15px; overflow: hidden; box-sizing: border-box}
+.siderBarBox{height: 100%; }
+
+  /*login*/
+.loginBg{width: 100%; height: 100%; background: url('../image/login/loginBg.svg')  no-repeat center center; background-size: cover;overflow: auto;}
+.loginBox{width: 450px;  box-sizing: border-box; border-radius: 8px; box-shadow: 0 10px 29px 0 rgba(161,161,161,0.20); padding: 40px 25px;  background-color: #fff; position: absolute; left: 50%; top: 50%; margin: -272px 0 0 0; box-sizing: border-box;}
+.loginTitleBox{margin-bottom: 40px;}
+.loginTitle {text-align: center; font-size: 25px; font-weight: 200;}
+.loginForm .item-input{position: relative;}
+.loginForm .loginBtn{width: 100%; height: 50px;}
+.loginForm .el-form-item__content{line-height: 0; margin-left: 0!important;}
+.loginForm .input-icon{position: absolute; top: 15px; left: 20px; z-index: 1000;}
+.loginForm .el-form-item__error{margin: 10px 0 0 50px;}
+.loginForm input{height: 50px; padding: 0 50px;font-size: 16px;}
+.loginForm .el-checkbox{margin-left: 5px;}
+.loginForm .el-form-item{margin-bottom:40px;}
+  /*header*/
+.header{height: 48px;background-color: rgb(84, 92, 100); padding: 0 16px;}
+.header .navItem{display: inline-block;}
+.header .el-menu-demo{min-width: 1100px; width: 1100px; margin: 0 auto;}
+.header .el-menu-item{height: 48px; line-height: 48px;}
+.header .is-active{border-bottom: 2px solid rgb(255, 208, 75);}
+.header .logo {height: 48px; line-height: 48px; color: #ffffff; margin-right: 50px;}
+.header .logo>img{vertical-align: middle;}
+.header .user {height: 48px; line-height: 48px; color: #ffffff;vertical-align: middle; cursor: pointer;}
+.header .user .el-dropdown{color: #ffffff;}
+.header .avatar {width: 24px;height: 24px; border-radius: 50%;vertical-align: middle;}
+.el-table__header-wrapper .has-gutter th{background-color: #F5F7FA}
+/* 针对弹窗滚动条的样式 */
+.dialog-wrap .el-scrollbar__wrap{max-height: calc(100vh - 400px); min-height: 180px; overflow-x: hidden}
+.dialog-wrap .el-dialog__body{padding: 30px 0 30px 20px}
+.dialog-wrap .el-scrollbar__view{padding-right: 20px;}
+.banner .list .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {background-color: #e4393c !important;}

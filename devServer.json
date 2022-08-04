@@ -1,0 +1,9 @@
+{
+	"context": [
+		"/api"
+	],
+	"target": "http://192.168.212.40:9000",
+	"pathRewrite": {
+		"^/api": ""
+	}
+}

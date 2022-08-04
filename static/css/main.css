@@ -1,0 +1,177 @@
+@import "./style.css";
+@import "./reset.css";
+@import "./iconfont/iconfont.css";
+/******公共******/
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+.cb{
+  clear: both;
+}
+
+.tc {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.clr {
+  clear: both;
+}
+
+.ellipsis{ /*溢出隐藏... 加个指定min-width和相应title即可*/
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+.margin-top-15{
+  margin-top: 15px;
+}
+.margin-bottom-15{
+  margin-bottom: 15px;
+}
+
+#app{
+  height: 100%;
+}
+.index-body{
+  height: 100%;
+}
+.weight600{
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.link-color{
+  color: #556fdd
+}
+.font-color85{
+  color: rgba(0,0,0,0.85)
+}
+.font-color65{
+  color: rgba(0,0,0,0.65)
+}
+.font-color45{
+  color: rgba(0,0,0,0.45)
+}
+
+
+.font-size12{
+  font-size: 12px;
+}
+.font-size14{
+  font-size: 14px;
+}
+.font-size16{
+  font-size: 16px;
+}
+.font-size20{
+  font-size: 20px;
+}
+.iconfont{
+  color: rgba(0,0,0,0.65)
+}
+.fontSize12{
+  font-size: 12px;
+}
+.fontSize14{
+  font-size: 14px;
+}
+.fontWeight{
+  font-weight: 600
+}
+
+.m-left10{
+  margin-left: 10px;
+}
+.m-left20{
+  margin-left: 20px;
+}
+.m-right10{
+  margin-right: 10px;
+}
+.m-right20{
+  margin-right: 20px;
+}
+.m-top10{
+  margin-top: 10px;
+}
+.m-top20{
+  margin-top: 20px;
+}
+.m-bottom10{
+  margin-bottom: 10px;
+}
+.m-bottom20{
+  margin-bottom: 20px;
+}
+.home-body {
+  height: 100%;
+  padding: 20px;
+}
+.block {
+  float: right;
+  margin-top: 20px;
+}
+.el-dialog__header {
+  position: relative;
+  background-color: #409EFF;
+}
+.el-dialog__header .el-dialog__title {
+  color: #fff;
+}
+.el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+}
+.el-dialog__footer {
+  border-top: 1px solid #DCDEE2;
+    background: #F5F7FA;
+    border-radius: 0px 0px 4px 4px;
+    padding: 12px 16px;
+}
+.dialog-wrap .el-dialog__body {
+  padding: 30px 20px !important;
+}
+.el-date-editor.el-input {
+  width: 100%;
+}
+.el-cascader {
+  width: 100%;
+}
+.select-shuang .el-form-item .el-form-item__content {
+  margin-left: 26px !important;
+}
+/*在Chrome下移除input[number]的上下箭头*/
+.no-number::-webkit-outer-spin-button,
+.no-number::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none !important;
+}
+ 
+.no-number input[type="number"]::-webkit-outer-spin-button,
+.no-number input[type="number"]::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none !important;
+}
+ 
+/*在firefox下移除input[number]的上下箭头*/
+.no-number {
+  -moz-appearance: textfield;
+}
+ 
+.no-number input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* .el-table, .has-gutter .el-table__cell {
+  background-color: red;
+}
+
+.el-table, .el-table__cell {
+  background-color: red;
+} */
