@@ -17,7 +17,7 @@
           {{ scope.row.socialSecurity | switchType }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="240">
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button @click="check(scope.row)" type="text" size="small">
             查看
@@ -27,6 +27,9 @@
           </el-button>
           <el-button @click="information(scope.row)" type="text" size="small">
             出单信息登记
+          </el-button>
+          <el-button @click="payment(scope.row)" type="text" size="small">
+            付款
           </el-button>
         </template>
       </el-table-column>
@@ -69,22 +72,34 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="付款" :visible.sync="dialogPayment" width="600px" class="dialog-wrap"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <add-payment ref="paymentForm" v-if="dialogPayment">
+      </add-payment>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogPayment = false">取 消</el-button>
+        <el-button type="primary" @click="confirmPayment">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script type="text/babel">
 import addInformation from './dialog/AddInformationForm.vue'
 import addPersonal from './dialog/AddPersonal.vue'
+import addPayment from './dialog/AddPayment.vue'
 import { timeStamp } from '../../util/date'
 import { cloneDeep } from 'lodash'
 export default {
   components: {
     addInformation,
-    addPersonal
+    addPersonal,
+    addPayment
   },
   data () {
     return {
       dialogVisible: false,
+      dialogPayment: false,
       titleCheck: '',
       isShowCheck: true,
       rowDataCheck: null,
@@ -210,6 +225,38 @@ export default {
             if (data.success) {
               this.getList(this.current, this.size)
               this.informationVisible = false
+              this.$message.success(data.msg)
+            } else {
+              this.$message.error(data.msg)
+            }
+          })
+        }
+      })
+    },
+    // 付款
+    payment () {
+      this.dialogPayment = true
+    },
+    // 付款申请
+    confirmPayment () {
+      const form = this.$refs.paymentForm
+      form.$refs.taskForm.validate((valid) => {
+        if (valid) {
+          console.log(form.taskForm)
+          const params = cloneDeep(form.taskForm)
+          console.log(typeof params.talentPrice)
+          params.receiptTime = timeStamp(params.receiptTime)
+          params.businessTime = timeStamp(params.businessTime)
+          params.finalProfit = Number(params.finalProfit)
+          params.talentPrice = Number(params.talentPrice)
+          params.contractPeriod = Number(params.contractPeriod)
+          params.companyPrice = Number(params.companyPrice)
+          params.years = Number(params.years)
+          params.mixFee = Number(params.mixFee)
+          params.talentUuid = this.uuid
+          this.$post('/orderInfo/registerInfo', params).then(({ data }) => {
+            if (data.success) {
+              this.dialogPayment = false
               this.$message.success(data.msg)
             } else {
               this.$message.error(data.msg)

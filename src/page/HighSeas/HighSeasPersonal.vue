@@ -6,6 +6,10 @@
  -->
 <template>
   <div class="">
+    <div class="m-bottom10">
+      <el-button type="primary" icon="el-icon-plus" @click="batchImport">批量导入</el-button>
+      <!-- <el-button type="primary" icon="el-icon-plus" @click="enterpriselAdd">企业添加</el-button> -->
+    </div>
     <div style="margin-bottom:16px;">
       <el-input v-model="searchKey" placeholder="请输入专业" style="width:300px;"  @keyup.enter.native="searchAction">
         <el-button slot="append" @click="searchAction">查询</el-button>
@@ -91,6 +95,9 @@ export default {
     handleCurrentChange (val) {
       this.current = val
       this.getList(val, this.size)
+    },
+    batchImport () {
+      this.getList(this.current, this.size, this.searchKey)
     },
     transfer (row) {
       this.$confirm('确定要保护？', '提示', {

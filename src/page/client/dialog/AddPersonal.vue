@@ -44,6 +44,9 @@
     <el-form-item label="备用手机号" prop="alIphoneNumber">
       <el-input :disabled="isShow" v-model="taskForm.alIphoneNumber" maxlength="11"></el-input>
     </el-form-item>
+    <el-form-item label="备注：">
+      <el-input type="textarea" v-model="taskForm.remark" :disabled="isShow"></el-input>
+    </el-form-item>
   </el-form>
 </template>
 <script type="text/babel">
@@ -355,7 +358,8 @@ export default {
         alIphoneNumber: null,
         socialSecurity: null,
         certificate: '',
-        profession: ''
+        profession: '',
+        remark: ''
       },
       rules: {
         realName: [

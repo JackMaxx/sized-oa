@@ -45,10 +45,10 @@
       <el-input class="no-number" :disabled="isShow" type="number" v-model="taskForm.mixFee" @input="changMixFee">
       </el-input>
     </el-form-item>
-    <!-- <el-form-item label="手机号：" prop="iphoneNumber">
-      <el-input :disabled="isShow" v-model="taskForm.iphoneNumber" maxlength="11"></el-input>
-    </el-form-item> -->
-    <!-- 备注多行文本 -->
+    <el-form-item label="回款：" v-if="!isShow">
+      <el-input class="no-number" :disabled="isShow" type="number" v-model="taskForm.moneyBack">
+      </el-input>
+    </el-form-item>
     <el-form-item label="备注：">
       <el-input type="textarea" v-model="taskForm.remark" :disabled="isShow"></el-input>
     </el-form-item>
@@ -81,6 +81,7 @@ export default {
         companyPrice: null, // 企业价格
         years: null, // 年限
         mixFee: null, // 杂费
+        moneyBack: null, // 回款
         remark: '' // 备注
       },
       rules: {

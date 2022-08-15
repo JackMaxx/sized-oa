@@ -19,7 +19,7 @@
           <el-button @click="check(scope.row)" type="text" size="small">
             查看
           </el-button>
-          <el-button @click="details(scope.row)" type="text" size="small">证书明细</el-button>
+          <el-button @click="details(scope.row)" type="text" size="small">资料上传</el-button>
           <el-button @click="cooperation(scope.row)" type="text" size="small">匹配合作</el-button>
         </template>
       </el-table-column>
@@ -48,21 +48,22 @@
     </el-dialog>
     <el-dialog title="证书明细" :visible.sync="certificateVisible" width="600px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <el-form :model="taskForm" v-if="certificateVisible" ref="taskForm" :rules="taskRule" label-width="100px"
-        class="demo-ruleForm" label-position="right">
-        <el-form-item label="资格证类别：" prop="qualifications">
-          <el-checkbox-group v-model="taskForm.listDetails">
-            <el-checkbox v-for="(item, index) in specializedList" :key="index" :label="item.name"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+      <el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card"
+        :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogUpload" append-to-body>
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="certificateVisible = false">取 消</el-button>
         <el-button type="primary" @click="certificateSubmit">确 定</el-button>
-      </span>
+      </span> -->
     </el-dialog>
-    <el-dialog :title="titleCheck" :visible.sync="dialogVisible" width="600px" class="dialog-wrap" :close-on-click-modal="false" :close-on-press-escape="false">
-      <add-personal ref="personalForm" :isShow="isShowCheck" :rowData="rowDataCheck" v-if="dialogVisible"></add-personal>
+    <el-dialog :title="titleCheck" :visible.sync="dialogVisible" width="600px" class="dialog-wrap"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <add-personal ref="personalForm" :isShow="isShowCheck" :rowData="rowDataCheck" v-if="dialogVisible">
+      </add-personal>
       <span slot="footer" class="dialog-footer" v-if="!isShowCheck">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
@@ -79,38 +80,14 @@ export default {
   },
   data () {
     return {
+      dialogImageUrl: '',
+      dialogUpload: false,
       dialogVisible: false,
+      talentUuid: '',
       titleCheck: '',
       isShowCheck: true,
       rowDataCheck: null,
-      userUuid: localStorage.getItem('userUuid'),
       personnelNameList: [],
-      specializedList: [
-        {
-          name: '资料明细',
-          value: 1
-        },
-        {
-          name: '资格证',
-          value: 2
-        },
-        {
-          name: '职称证书',
-          value: 3
-        },
-        {
-          name: '解聘证书',
-          value: 4
-        },
-        {
-          name: '学历证明',
-          value: 5
-        },
-        {
-          name: '自由选择',
-          value: 6
-        }
-      ],
       tableData: [],
       certificateForm: {
         qualifications: []
@@ -125,15 +102,8 @@ export default {
       transForm: {
         personnelName: ''
       },
-      taskForm: {
-        listDetails: [],
-        talentUuid: ''
-      },
       transRules: {
         personnelName: [{ required: true, message: '请选择公司名称', trigger: 'change' }]
-      },
-      taskRule: {
-        listDetails: [{ required: true, message: '请选择资格证类别', trigger: 'change' }]
       }
     }
   },
@@ -158,6 +128,13 @@ export default {
     this.getList(this.current, this.size)
   },
   methods: {
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogUpload = true
+    },
     check (row) {
       this.titleCheck = '查看'
       this.dialogVisible = true
@@ -188,15 +165,8 @@ export default {
     },
     // 证书明细
     details (row) {
-      this.taskForm.talentUuid = row.uuid
-      this.$get(`/talentManage/getCertDetails/${row.uuid}`).then((res) => {
-        if (res.data.success) {
-          this.taskForm.listDetails = res.data.data && res.data.data.listDetails ? res.data.data.listDetails : []
-          this.certificateVisible = true
-        } else {
-          this.$message({ type: 'error', message: res.data.msg })
-        }
-      })
+      this.talentUuid = row.uuid
+      this.certificateVisible = true
     },
     // 匹配合作
     cooperation (row) {

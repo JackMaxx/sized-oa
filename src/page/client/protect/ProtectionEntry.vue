@@ -21,6 +21,9 @@
           <el-button @click="cancel(scope.row)" type="text" size="small" >
             取消保护
           </el-button>
+          <el-button @click="note(scope.row)" type="text" size="small">
+            小记
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,18 +41,30 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="沟通记录" :visible.sync="dialogNote" width="900px" class="dialog-wrap" :close-on-click-modal="false" :close-on-press-escape="false">
+      <add-note ref="personalForm" v-if="dialogNote" :orderUuid="orderUuid" :isView="isView"></add-note>
+      <span slot="footer" class="dialog-footer" v-if="isView">
+        <el-button @click="dialogNote = false">取 消</el-button>
+        <el-button type="primary" @click="dialogNote = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script type="text/babel">
 import addPersonal from '../dialog/EnterAddPersonal.vue'
+import addNote from '../dialog/AddNote.vue'
 export default {
   components: {
-    addPersonal
+    addPersonal,
+    addNote
   },
   data () {
     return {
+      dialogNote: false,
       dialogVisible: false,
+      isView: false,
+      orderUuid: '',
       title: '',
       isShow: true,
       rowData: null,
@@ -64,6 +79,11 @@ export default {
     this.getList(this.current, this.size)
   },
   methods: {
+    note (row) {
+      this.dialogNote = true
+      this.orderUuid = row.uuid
+      this.isView = false
+    },
     check (row) {
       this.title = '查看'
       this.dialogVisible = true
