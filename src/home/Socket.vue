@@ -22,7 +22,8 @@ export default {
   },
   mounted: function () {
     const nameSpace = localStorage.getItem('userUuid')
-    const host = 'http://192.168.2.21:28014'
+    const proUrl = window.location.hostname // 生成环境
+    const host = `http://${proUrl}:28014`
     this.chatSocketList = io(host + '/' + nameSpace)
     // this.chatSocketList = io('/' + nameSpace)
     this.chatSocketList.on('connect', this.connectHandler)
