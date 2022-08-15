@@ -33,11 +33,25 @@
         :page-sizes="[10, 20, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
-    <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" class="dialog-wrap" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" class="dialog-wrap"
+      :close-on-click-modal="false" :close-on-press-escape="false">
       <add-personal ref="personalForm" :isShow="isShow" :rowData="rowData" v-if="dialogVisible"></add-personal>
       <span slot="footer" class="dialog-footer" v-if="!isShow">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="假名匹配" :visible.sync="dialogMatch" width="600px" class="dialog-wrap" :close-on-click-modal="false"
+      :close-on-press-escape="false">
+      <el-form :model="transForm" v-if="dialogMatch" :rules="transRules" ref="transForm" label-width="100px"
+        class="demo-ruleForm" label-position="right">
+        <el-form-item label="企业名称：" prop="enterpriseName">
+          <el-input v-model="transForm.enterpriseName" placeholder="请输入企业名称"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogMatch = false">取 消</el-button>
+        <el-button type="primary" @click="confirMatch">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -51,16 +65,23 @@ export default {
   },
   data () {
     return {
+      dialogMatch: false,
       dialogVisible: false,
+      uuid: '',
       title: '',
       isShow: true,
       rowData: null,
       tableData: [],
-      userUuid: localStorage.getItem('userUuid'),
+      transForm: {
+        enterpriseName: ''
+      },
       currentPage4: 1,
       current: 1,
       size: 10,
-      total: 0
+      total: 0,
+      transRules: {
+        enterpriseName: [{ required: true, message: '请输入公司假名', trigger: 'blur' }]
+      }
     }
   },
   filters: {
@@ -108,19 +129,28 @@ export default {
       this.getList(val, this.size)
     },
     contract (row) {
-      const param = {
-        type: 1,
-        auditObjUuid: row.uuid
-      }
-      this.$post('/orderInfo/save', param).then((data) => {
-        if (data.data.success) {
-          this.getList(this.current, this.size)
-          this.$message({
-            type: 'success',
-            message: '正在审核中'
+      this.uuid = row.uuid
+      this.dialogMatch = true
+    },
+    confirMatch () {
+      this.$refs.transForm.validate((valid) => {
+        if (valid) {
+          const param = {
+            type: 1,
+            auditObjUuid: this.uuid,
+            enterpriseName: this.transForm.enterpriseName
+          }
+          this.$post('/orderInfo/save', param).then((data) => {
+            if (data.data.success) {
+              this.getList(this.current, this.size)
+              this.$message({
+                type: 'success',
+                message: '正在审核中'
+              })
+            } else {
+              this.$message.error(data.data.msg)
+            }
           })
-        } else {
-          this.$message.error(data.data.msg)
         }
       })
     },
