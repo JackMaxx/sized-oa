@@ -56,7 +56,7 @@
     </el-dialog>
     <el-dialog :title="title" :visible.sync="informationVisible" width="900px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <add-information ref="informationForm" v-if="informationVisible" :rowData="rowData" :isShow="isShow">
+      <add-information ref="informationForm" v-if="informationVisible" :isObj="isObj" :rowData="rowData" :isShow="isShow">
       </add-information>
       <span slot="footer" class="dialog-footer" v-if="!isShow">
         <el-button @click="informationVisible = false">取 消</el-button>
@@ -98,6 +98,7 @@ export default {
   },
   data () {
     return {
+      isObj: false,
       dialogVisible: false,
       dialogPayment: false,
       titleCheck: '',
@@ -171,37 +172,22 @@ export default {
     },
     information (row) {
       this.uuid = row.uuid
-      if (this.userUuid === row.createUser) {
-        if (row.contractUuid && row.contractUuid !== null) {
-          this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
-            if (data.success) {
-              this.isShow = false
-              this.title = '编辑出单信息登记'
-              this.informationVisible = true
-              this.rowData = data.data
-            } else {
-              this.$message.error(data.data.msg)
-            }
-          })
-        } else {
-          this.informationVisible = true
-          this.title = '新建出单信息登记'
-        }
+      if (row.contractUuid && row.contractUuid !== null) {
+        this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
+          if (data.success) {
+            this.isShow = false
+            this.isObj = true
+            this.title = '编辑出单信息登记'
+            this.informationVisible = true
+            this.rowData = data.data
+          } else {
+            this.$message.error(data.data.msg)
+          }
+        })
       } else {
-        if (row.contractUuid && row.contractUuid !== null) {
-          this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
-            if (data.success) {
-              this.isShow = true
-              this.title = '查看出单信息登记'
-              this.informationVisible = true
-              this.rowData = data.data
-            } else {
-              this.$message.error(data.data.msg)
-            }
-          })
-        } else {
-          this.$message.error('暂无出单信息')
-        }
+        this.isShow = false
+        this.informationVisible = true
+        this.title = '新建出单信息登记'
       }
     },
     contract (row) {

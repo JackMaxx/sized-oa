@@ -45,7 +45,7 @@
       <el-input class="no-number" :disabled="isShow" type="number" v-model="taskForm.mixFee" @input="changMixFee">
       </el-input>
     </el-form-item>
-    <el-form-item label="回款：" v-if="!isShow">
+    <el-form-item label="回款：" v-if="isObj">
       <el-input class="no-number" :disabled="isShow" type="number" v-model="taskForm.moneyBack">
       </el-input>
     </el-form-item>
@@ -111,6 +111,10 @@ export default {
       default: null
     },
     isShow: {
+      type: Boolean,
+      default: false
+    },
+    isObj: {
       type: Boolean,
       default: false
     }

@@ -31,7 +31,7 @@
     </div>
     <el-dialog title="出单信息登记" :visible.sync="informationVisible" width="900px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <add-information ref="informationForm" :isShow="isShow" :rowData="rowData" v-if="informationVisible">
+      <add-information ref="informationForm" :isObj="isObj" :isShow="isShow" :rowData="rowData" v-if="informationVisible">
       </add-information>
     </el-dialog>
     <el-dialog :title="titleCheck" :visible.sync="dialogVisible" width="600px" class="dialog-wrap"
@@ -56,6 +56,7 @@ export default {
   },
   data () {
     return {
+      isObj: false,
       dialogVisible: false,
       titleCheck: '',
       isShowCheck: true,
@@ -139,11 +140,12 @@ export default {
       this.getList(val, this.size)
     },
     information (row) {
-      this.isShow = true
       if (row.contractUuid && row.contractUuid !== null) {
         this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
           if (data.success) {
+            this.isShow = true
             this.rowData = data.data
+            this.isObj = true
             this.informationVisible = true
           } else {
             this.$message.error(data.data.msg)
