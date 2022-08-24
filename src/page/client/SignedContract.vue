@@ -204,6 +204,11 @@ export default {
       this.targetUuid = row.uuid
       this.$post(`/businessManage/getCoopList`, {}).then((res) => {
         if (res.data.success) {
+          res.data.data.forEach(item => {
+            if (item.pseudonym === null || item.pseudonym === '') {
+              item.pseudonym = item.businessName
+            }
+          })
           this.personnelNameList = res.data.data
         } else {
           this.$message({ type: 'error', message: res.data.msg })
