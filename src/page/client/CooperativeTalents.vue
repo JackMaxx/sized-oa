@@ -72,8 +72,8 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="付款" :visible.sync="dialogPayment" width="600px" class="dialog-wrap"
-      :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="付款" :visible.sync="dialogPayment" width="600px" class="dialog-wrap" :close-on-click-modal="false"
+      :close-on-press-escape="false">
       <add-payment ref="paymentForm" v-if="dialogPayment">
       </add-payment>
       <span slot="footer" class="dialog-footer">
@@ -188,16 +188,20 @@ export default {
           this.title = '新建出单信息登记'
         }
       } else {
-        this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
-          if (data.success) {
-            this.isShow = true
-            this.title = '查看出单信息登记'
-            this.informationVisible = true
-            this.rowData = data.data
-          } else {
-            this.$message.error(data.data.msg)
-          }
-        })
+        if (row.contractUuid && row.contractUuid !== null) {
+          this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
+            if (data.success) {
+              this.isShow = true
+              this.title = '查看出单信息登记'
+              this.informationVisible = true
+              this.rowData = data.data
+            } else {
+              this.$message.error(data.data.msg)
+            }
+          })
+        } else {
+          this.$message.error('暂无出单信息')
+        }
       }
     },
     contract (row) {
