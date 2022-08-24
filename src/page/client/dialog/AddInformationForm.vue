@@ -45,8 +45,8 @@
       <el-input class="no-number" :disabled="isShow" type="number" v-model="taskForm.mixFee" @input="changMixFee">
       </el-input>
     </el-form-item>
-    <el-form-item label="合作对象：" v-if="isShow">
-      <el-input v-model="taskForm.coopBusinessName" disabled></el-input>
+    <el-form-item label="合作对象：" v-if="isObj">
+      <el-input v-model="taskForm.coopUserName" disabled></el-input>
     </el-form-item>
     <!-- <el-form-item label="手机号：" prop="iphoneNumber">
       <el-input :disabled="isShow" v-model="taskForm.iphoneNumber" maxlength="11"></el-input>
@@ -84,7 +84,7 @@ export default {
         companyPrice: null, // 企业价格
         years: null, // 年限
         mixFee: null, // 杂费
-        coopBusinessName: '',
+        coopUserName: '',
         remark: '' // 备注
       },
       rules: {
@@ -114,6 +114,10 @@ export default {
       default: null
     },
     isShow: {
+      type: Boolean,
+      default: false
+    },
+    isObj: {
       type: Boolean,
       default: false
     }

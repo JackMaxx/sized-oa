@@ -18,7 +18,7 @@
           <el-button @click="information(scope.row)" type="text" size="small">
             出单信息登记
           </el-button>
-          <el-button @click="disuse(scope.row)" type="text" size="small"  v-if="userUuid === scope.row.createUser">
+          <el-button @click="disuse(scope.row)" type="text" size="small" v-if="userUuid === scope.row.createUser">
             淘汰
           </el-button>
         </template>
@@ -31,12 +31,14 @@
     </div>
     <el-dialog title="出单信息登记" :visible.sync="informationVisible" width="900px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <add-information ref="informationForm" :isShow="isShow" :rowData="rowData" v-if="informationVisible">
+      <add-information ref="informationForm" :isShow="isShow" :rowData="rowData" :isObj="isObj"
+        v-if="informationVisible">
       </add-information>
     </el-dialog>
     <el-dialog :title="titleCheck" :visible.sync="dialogVisible" width="600px" class="dialog-wrap"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <add-personal ref="personalForm" :isShow="isShowCheck" :rowData="rowDataCheck" v-if="dialogVisible"></add-personal>
+      <add-personal ref="personalForm" :isShow="isShowCheck" :rowData="rowDataCheck" v-if="dialogVisible">
+      </add-personal>
       <span slot="footer" class="dialog-footer" v-if="!isShowCheck">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
@@ -55,6 +57,7 @@ export default {
   },
   data () {
     return {
+      isObj: false,
       dialogVisible: false,
       titleCheck: '',
       isShowCheck: true,
@@ -139,14 +142,19 @@ export default {
     },
     information (row) {
       this.isShow = true
-      this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
-        if (data.success) {
-          this.rowData = data.data
-          this.informationVisible = true
-        } else {
-          this.$message.error(data.data.msg)
-        }
-      })
+      this.isObj = true
+      if (row.contractUuid && row.contractUuid !== null) {
+        this.$get(`/contractManage/registerInfoView/${row.contractUuid}`).then(({ data }) => {
+          if (data.success) {
+            this.rowData = data.data
+            this.informationVisible = true
+          } else {
+            this.$message.error(data.data.msg)
+          }
+        })
+      } else {
+        this.$message.error('暂无出单信息')
+      }
     },
     disuse (row) {
       this.$confirm('确定要淘汰？', '提示', {

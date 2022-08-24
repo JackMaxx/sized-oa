@@ -38,6 +38,19 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="假名匹配" :visible.sync="dialogMatch" width="600px" class="dialog-wrap" :close-on-click-modal="false"
+      :close-on-press-escape="false">
+      <el-form :model="transForm" v-if="dialogMatch" :rules="transRules" ref="transForm" label-width="100px"
+        class="demo-ruleForm" label-position="right">
+        <el-form-item label="企业名称：" prop="enterpriseName">
+          <el-input v-model="transForm.enterpriseName" placeholder="请输入企业名称"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogMatch = false">取 消</el-button>
+        <el-button type="primary" @click="confirMatch">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -49,15 +62,23 @@ export default {
   },
   data () {
     return {
+      dialogMatch: false,
       dialogVisible: false,
       title: '',
+      uuid: '',
+      transForm: {
+        enterpriseName: ''
+      },
       isShow: true,
       rowData: null,
       tableData: [],
       currentPage4: 1,
       current: 1,
       size: 10,
-      total: 0
+      total: 0,
+      transRules: {
+        enterpriseName: [{ required: true, message: '请输入公司假名', trigger: 'blur' }]
+      }
     }
   },
   mounted () {
@@ -93,9 +114,13 @@ export default {
       this.getList(val, this.size)
     },
     contract (row) {
+      this.uuid = row.uuid
+      this.dialogMatch = true
+    },
+    save () {
       const param = {
         type: 3,
-        auditObjUuid: row.uuid
+        auditObjUuid: this.uuid
       }
       this.$post('/orderInfo/save', param).then((data) => {
         if (data.data.success) {
@@ -106,6 +131,24 @@ export default {
           })
         } else {
           this.$message.error(data.data.msg)
+        }
+      })
+    },
+    confirMatch () {
+      this.$refs.transForm.validate((valid) => {
+        if (valid) {
+          const param = {
+            uuid: this.uuid,
+            pseudonym: this.transForm.enterpriseName
+          }
+          this.$post('/businessManage/setPseudonym', param).then((data) => {
+            if (data.data.success) {
+              this.dialogMatch = false
+              this.save()
+            } else {
+              this.$message.error(data.data.msg)
+            }
+          })
         }
       })
     },

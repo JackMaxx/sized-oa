@@ -173,6 +173,14 @@ export default {
           children: []
         },
         {
+          id: 3,
+          title: '审核单',
+          icon: 'icon-my-home',
+          path: '/checklist',
+          name: 'menu_checklist',
+          children: []
+        },
+        {
           id: 4,
           title: '公海',
           icon: 'icon-my-home',

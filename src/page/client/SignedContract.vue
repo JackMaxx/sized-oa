@@ -35,7 +35,7 @@
         class="demo-ruleForm" label-position="right">
         <el-form-item label="公司名称：" prop="personnelName">
           <el-select v-model="transForm.personnelName" placeholder="请选择公司">
-            <el-option v-for="(item, index) in personnelNameList" :label="item.businessName" :value="item.uuid"
+            <el-option v-for="(item, index) in personnelNameList" :label="item.pseudonym" :value="item.uuid"
               :key="index">
             </el-option>
           </el-select>
