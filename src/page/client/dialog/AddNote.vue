@@ -10,6 +10,7 @@
       <div ref="content" v-for="item in messageList" :key="item.createTime">
         <div :key="item.uuid">
           <div>
+            <span class="content-name">{{item.createUserName}}</span>
             <span class="content-time">{{item.createTime}}</span>
           </div>
           <span class="content-message" v-html="item.message"></span>
@@ -17,9 +18,9 @@
       </div>
     </div>
     <div style="height: 150px;" v-if="isView">
-      <el-input type="textarea" v-model="taskForm.remark" placeholder="请填写"></el-input>
+      <el-input type="textarea" v-model="content" placeholder="请填写"></el-input>
       <div class="add-content" :style="actionButton">
-        <s-button type="default" @click="handleClick">发 送</s-button>
+        <el-button type="default" @click="handleClick">发 送</el-button>
       </div>
     </div>
   </div>
@@ -47,21 +48,21 @@ export default {
   },
   methods: {
     getMessageList () {
-      this.$get(`/suninfo-itsm/itsmOrderOper/getCommunicateRec/${this.orderUuid}`).then(res => {
-        if (res.success) {
-          this.messageList = res.data || []
+      this.$get(`/notesRecord/getNotesRec/${this.orderUuid}`).then(({ data }) => {
+        if (data.success) {
+          this.messageList = data.data || []
         }
         this.setBottom()
       })
     },
     handleClick () {
       const params = {
-        orderUuid: this.orderUuid,
+        notesObjUuid: this.orderUuid,
         message: this.content
       }
       if (this.content) {
-        this.$post('/suninfo-itsm/itsmOrderOper/saveCommunicateRec', params).then(res => {
-          if (res.success) {
+        this.$post('/notesRecord/saveNotesRec', params).then(({ data }) => {
+          if (data.success) {
             this.content = ''
             this.$message.success('发表成功')
             this.getMessageList()
@@ -98,6 +99,12 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
+}
+.content-name {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  margin-right: 20px;
 }
 .content-time {
   font-weight: 400;

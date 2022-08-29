@@ -6,39 +6,35 @@
  -->
  <template>
   <div>
-    <el-form :model="taskForm" :rules="rules" ref="taskForm" label-width="100px" class="demo-ruleForm"
+    <el-form :model="taskForm" :rules="rules" ref="taskForm" label-width="120px" class="demo-ruleForm"
       label-position="left">
       <el-form-item label="付款事由：">
-        <el-input type="textarea" placeholder="请填写" v-model="taskForm.remark" :disabled="isShow"></el-input>
+        <el-input type="textarea" placeholder="请填写" v-model="taskForm.payReason" :disabled="isShow"></el-input>
       </el-form-item>
-      <el-form-item label="付款金额：" prop="mixFee">
-        <el-input class="no-number" placeholder="请填写" :disabled="isShow" type="number" v-model="taskForm.mixFee" @input="changMixFee">
+      <el-form-item label="付款金额：" prop="amount">
+        <el-input class="no-number" placeholder="请填写" :disabled="isShow" type="number" v-model="taskForm.amount" @input="changMixFee">
         </el-input>
       </el-form-item>
-      <el-form-item label="付款时间：" prop="entryTime">
-        <el-date-picker v-model="taskForm.entryTime" type="datetime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"
+      <el-form-item label="付款时间：" prop="payTime">
+        <el-date-picker v-model="taskForm.payTime" :disabled="isShow" type="datetime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"
           placeholder="请选择" :editable="false">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="收款人全称：" prop="realName">
-        <el-input v-model="taskForm.realName" placeholder="请填写"></el-input>
+      <el-form-item label="收款人全称：" prop="payee">
+        <el-input v-model="taskForm.payee" placeholder="请填写" :disabled="isShow"></el-input>
       </el-form-item>
-      <el-form-item label="银行账号：" prop="mixFee">
-        <el-input class="no-number" placeholder="请填写" :disabled="isShow" type="number" v-model="taskForm.mixFee" @input="changMixFee">
+      <el-form-item label="银行账号：" prop="bankAccount">
+        <el-input class="no-number" placeholder="请填写" :disabled="isShow" type="number" v-model="taskForm.bankAccount" @input="changMixFee">
         </el-input>
       </el-form-item>
-      <el-form-item label="开户行：" prop="realName">
-        <el-input v-model="taskForm.realName" placeholder="请填写"></el-input>
+      <el-form-item label="开户行：" prop="bankName">
+        <el-input v-model="taskForm.bankName" placeholder="请填写" :disabled="isShow"></el-input>
       </el-form-item>
       <el-form-item label="备注说明：">
         <el-input type="textarea" v-model="taskForm.remark" :disabled="isShow" placeholder="请填写"></el-input>
       </el-form-item>
-      <el-form-item label="合作对象：" prop="personnelName">
-        <el-select v-model="transForm.personnelName" placeholder="请选择">
-          <el-option v-for="(item, index) in personnelNameList" :label="item.businessName" :value="item.uuid"
-            :key="index">
-          </el-option>
-        </el-select>
+      <el-form-item label="合作对象：">
+        <el-input v-model="taskForm.coopObjUuid" :disabled="isShow" placeholder="请填写"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -49,35 +45,40 @@ export default {
   data () {
     return {
       taskForm: {
-        realName: '',
-        entryTime: null,
-        loginName: ''
+        payReason: '',
+        amount: null,
+        payTime: null,
+        payee: '',
+        bankAccount: null,
+        bankName: '',
+        remark: '',
+        coopObjUuid: ''
       },
       rules: {
-        realName: [
-          { required: true, message: '请输入人员姓名', trigger: 'blur' }
-        ],
-        entryTime: [
-          { required: true, message: '请选择入职时间', trigger: 'change' }
-        ],
-        loginName: [
-          { pattern: /^[a-zA-Z]+$/, message: '账号只能包含字母', trigger: 'blur' },
-          { required: true, message: '请输入账号', trigger: 'blur' }
-        ]
+        amount: [{ required: true, message: '请输入', trigger: 'blur' }],
+        bankAccount: [{ required: true, message: '请输入', trigger: 'blur' }],
+        bankName: [{ required: true, message: '请输入', trigger: 'blur' }],
+        payTime: [{ required: true, message: '请选择', trigger: 'change' }],
+        payee: [{ required: true, message: '请输入', trigger: 'blur' }],
+        coopObjUuid: [{ required: true, message: '请选择', trigger: 'change' }]
       }
     }
   },
   props: {
-    rowData: {
+    rowPayData: {
       type: Object,
       default: null
+    },
+    isShow: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
   },
   mounted () {
-    if (this.rowData) {
-      this.taskForm = intersectObj(this.taskForm, this.rowData)
+    if (this.rowPayData) {
+      this.taskForm = intersectObj(this.taskForm, this.rowPayData)
     }
   }
 }

@@ -28,7 +28,7 @@
           <el-button @click="information(scope.row)" type="text" size="small">
             出单信息登记
           </el-button>
-          <el-button @click="payment(scope.row)" type="text" size="small">
+          <el-button @click="payment(scope.row)" type="text" size="small" v-if="scope.row.contractUuid !== null">
             付款
           </el-button>
         </template>
@@ -56,7 +56,8 @@
     </el-dialog>
     <el-dialog :title="title" :visible.sync="informationVisible" width="900px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <add-information ref="informationForm" v-if="informationVisible" :isObj="isObj" :rowData="rowData" :isShow="isShow">
+      <add-information ref="informationForm" v-if="informationVisible" :isObj="isObj" :rowData="rowData"
+        :isShow="isShow">
       </add-information>
       <span slot="footer" class="dialog-footer" v-if="!isShow">
         <el-button @click="informationVisible = false">取 消</el-button>
@@ -72,11 +73,11 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="付款" :visible.sync="dialogPayment" width="600px" class="dialog-wrap" :close-on-click-modal="false"
+    <el-dialog :title="titlePay" :visible.sync="dialogPayment" width="600px" class="dialog-wrap" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <add-payment ref="paymentForm" v-if="dialogPayment">
+      <add-payment ref="paymentForm" v-if="dialogPayment" :rowPayData="rowPayData" :isShow="isPayShow">
       </add-payment>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer" class="dialog-footer" v-if="!isPayShow">
         <el-button @click="dialogPayment = false">取 消</el-button>
         <el-button type="primary" @click="confirmPayment">确 定</el-button>
       </span>
@@ -98,6 +99,8 @@ export default {
   },
   data () {
     return {
+      titlePay: '申请付款',
+      isPayShow: false,
       isObj: false,
       dialogVisible: false,
       dialogPayment: false,
@@ -109,6 +112,7 @@ export default {
       informationVisible: false,
       beexpiredVisible: false,
       rowData: null,
+      rowPayData: null,
       isShow: false,
       tableData: [],
       currentPage4: 1,
@@ -186,6 +190,8 @@ export default {
         })
       } else {
         this.isShow = false
+        this.isObj = false
+        this.rowData = null
         this.informationVisible = true
         this.title = '新建出单信息登记'
       }
@@ -199,12 +205,11 @@ export default {
       const form = this.$refs.informationForm
       form.$refs.taskForm.validate((valid) => {
         if (valid) {
-          console.log(form.taskForm)
           const params = cloneDeep(form.taskForm)
-          console.log(typeof params.talentPrice)
           params.receiptTime = timeStamp(params.receiptTime)
           params.businessTime = timeStamp(params.businessTime)
           params.finalProfit = Number(params.finalProfit)
+          params.moneyBack = params.moneyBack ? Number(params.moneyBack) : null
           params.talentPrice = Number(params.talentPrice)
           params.contractPeriod = Number(params.contractPeriod)
           params.companyPrice = Number(params.companyPrice)
@@ -224,29 +229,40 @@ export default {
       })
     },
     // 付款
-    payment () {
-      this.dialogPayment = true
+    payment (row) {
+      this.uuid = row.uuid
+      if (row.paymentUuid) {
+        this.$get(`/talentManage/getPaymentInfo/${row.uuid}`).then(({ data }) => {
+          if (data.success) {
+            this.titlePay = '查看付款'
+            this.isPayShow = true
+            this.dialogPayment = true
+            this.rowPayData = data.data
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      } else {
+        this.titlePay = '申请付款'
+        this.isPayShow = false
+        this.rowPayData = null
+        this.dialogPayment = true
+      }
     },
     // 付款申请
     confirmPayment () {
       const form = this.$refs.paymentForm
       form.$refs.taskForm.validate((valid) => {
         if (valid) {
-          console.log(form.taskForm)
           const params = cloneDeep(form.taskForm)
-          console.log(typeof params.talentPrice)
-          params.receiptTime = timeStamp(params.receiptTime)
-          params.businessTime = timeStamp(params.businessTime)
-          params.finalProfit = Number(params.finalProfit)
-          params.talentPrice = Number(params.talentPrice)
-          params.contractPeriod = Number(params.contractPeriod)
-          params.companyPrice = Number(params.companyPrice)
-          params.years = Number(params.years)
-          params.mixFee = Number(params.mixFee)
+          params.amount = Number(params.amount)
+          params.payTime = timeStamp(params.payTime)
+          params.bankAccount = Number(params.bankAccount)
           params.talentUuid = this.uuid
-          this.$post('/orderInfo/registerInfo', params).then(({ data }) => {
+          this.$post('/orderInfo/pay', params).then(({ data }) => {
             if (data.success) {
               this.dialogPayment = false
+              this.getList(this.current, this.size)
               this.$message.success(data.msg)
             } else {
               this.$message.error(data.msg)

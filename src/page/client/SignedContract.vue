@@ -46,9 +46,9 @@
         <el-button type="primary" @click="transferOut">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="证书明细" :visible.sync="certificateVisible" width="600px" :close-on-click-modal="false"
+    <el-dialog title="资料上传" :visible.sync="certificateVisible" width="600px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card"
+      <el-upload :action="action" list-type="picture-card"
         :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
       </el-upload>
@@ -92,6 +92,7 @@ export default {
       certificateForm: {
         qualifications: []
       },
+      action: '',
       currentPage4: 1,
       current: 1,
       size: 10,
@@ -163,9 +164,10 @@ export default {
       this.current = val
       this.getList(val, this.size)
     },
-    // 证书明细
+    // 资料上传
     details (row) {
       this.talentUuid = row.uuid
+      this.action = 'http://192.168.212.52:8080/talentManage/uploadData/' + row.uuid
       this.certificateVisible = true
     },
     // 匹配合作
@@ -196,7 +198,7 @@ export default {
         }
       })
     },
-    // 证书明细
+    // 资料上传
     certificateSubmit () {
       this.$refs.taskForm.validate((valid) => {
         if (valid) {

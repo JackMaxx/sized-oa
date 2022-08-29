@@ -78,15 +78,6 @@ const routes = [{
   name: 'menu_performance',
   component: Grail,
   children: [{
-    path: '/performance/performanceTable',
-    meta: {
-      title: '业绩表'
-    },
-    name: 'menu_performanceTable',
-    component: resolve =>
-      require(['../page/performance/PerformanceTable.vue'], resolve)
-  },
-  {
     path: '/performance/performanceList',
     meta: {
       title: '业绩榜'
