@@ -164,6 +164,6 @@ export function getDownload (url) {
   debugger
   var downloadIframe = document.createElement('iframe')
   downloadIframe.style.display = 'none'
-  downloadIframe.src = `https://192.168.212.52:8080/${url}?Down_Up_Load=1&suninfo-auth=11`
+  downloadIframe.src = `https://192.168.212.52:8080/${url}`
   document.body.appendChild(downloadIframe)
 }
