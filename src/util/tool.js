@@ -161,7 +161,6 @@ export function delCookie (name) {
   if (cval != null) { document.cookie = name + '=' + cval + ';expires=' + exp.toGMTString() }
 }
 export function getDownload (url) {
-  debugger
   var downloadIframe = document.createElement('iframe')
   downloadIframe.style.display = 'none'
   downloadIframe.src = `https://192.168.212.52:8080/${url}`
