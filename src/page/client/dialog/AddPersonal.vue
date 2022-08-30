@@ -10,7 +10,7 @@
     <el-form-item label="姓名" prop="realName">
       <el-input v-model="taskForm.realName" placeholder="请输入姓名" :disabled="isShow"></el-input>
     </el-form-item>
-    <el-form-item label="社保" prop="socialSecurity">
+    <el-form-item label="社保">
       <el-radio-group v-model="taskForm.socialSecurity" :disabled="isShow">
         <el-radio :label="1">唯一</el-radio>
         <el-radio :label="0">不唯一</el-radio>

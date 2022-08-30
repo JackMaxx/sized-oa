@@ -160,3 +160,10 @@ export function delCookie (name) {
   var cval = this.getCookie(name)
   if (cval != null) { document.cookie = name + '=' + cval + ';expires=' + exp.toGMTString() }
 }
+export function getDownload (url) {
+  debugger
+  var downloadIframe = document.createElement('iframe')
+  downloadIframe.style.display = 'none'
+  downloadIframe.src = `https://192.168.212.52:8080/${url}?Down_Up_Load=1&suninfo-auth=11`
+  document.body.appendChild(downloadIframe)
+}

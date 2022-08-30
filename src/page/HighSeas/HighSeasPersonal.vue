@@ -64,6 +64,7 @@
 
 <script type="text/babel">
 import addNote from '../client/dialog/AddNote.vue'
+import { getDownload } from '@/util/tool.js'
 export default {
   components: {
     addNote
@@ -77,7 +78,7 @@ export default {
       uploadBtnFlag: false,
       fileList: [],
       fileTypes: ['xls', 'xlsx'],
-      uploadObjUrl: '',
+      uploadObjUrl: `https://192.168.212.52:8080/talentManage/importTalentInfo`,
       tableData: [],
       currentPage4: 1,
       current: 1,
@@ -173,7 +174,7 @@ export default {
       })
     },
     downloadTemplate () {
-      // Download(this.downObj.url)
+      getDownload(this.uploadObjUrl)
     },
     searchAction () {
       this.getList(this.current, this.size, this.searchKey)
