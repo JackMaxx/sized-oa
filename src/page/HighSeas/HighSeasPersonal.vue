@@ -78,8 +78,8 @@ export default {
       uploadBtnFlag: false,
       fileList: [],
       fileTypes: ['xls', 'xlsx'],
-      uploadObjUrl: 'https://192.168.212.52:8080/talentManage/importTalentInfo',
-      downUrl: 'https://192.168.212.52:8080/talentManage/downTalentTemplate',
+      uploadObjUrl: `${window.location.origin}/talentManage/importTalentInfo`,
+      downUrl: `${window.location.origin}/talentManage/downTalentTemplate`,
       tableData: [],
       currentPage4: 1,
       current: 1,
@@ -175,7 +175,7 @@ export default {
       })
     },
     downloadTemplate () {
-      getDownload(this.uploadObjUrl)
+      getDownload(this.downUrl)
     },
     searchAction () {
       this.getList(this.current, this.size, this.searchKey)

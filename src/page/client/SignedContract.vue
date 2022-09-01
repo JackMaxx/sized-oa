@@ -167,7 +167,7 @@ export default {
     // 资料上传
     details (row) {
       this.talentUuid = row.uuid
-      this.action = 'http://192.168.212.52:8080/talentManage/uploadData/' + row.uuid
+      this.action = `${window.location.origin}/talentManage/uploadData/${row.uuid}`
       this.certificateVisible = true
     },
     // 匹配合作
