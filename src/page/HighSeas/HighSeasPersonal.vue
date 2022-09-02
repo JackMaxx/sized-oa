@@ -79,7 +79,7 @@ export default {
       fileList: [],
       fileTypes: ['xls', 'xlsx'],
       uploadObjUrl: `${window.location.origin}/talentManage/importTalentInfo`,
-      downUrl: `${window.location.origin}/talentManage/downTalentTemplate`,
+      downUrl: `talentManage/downTalentTemplate`,
       tableData: [],
       currentPage4: 1,
       current: 1,

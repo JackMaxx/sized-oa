@@ -163,6 +163,6 @@ export function delCookie (name) {
 export function getDownload (url) {
   var downloadIframe = document.createElement('iframe')
   downloadIframe.style.display = 'none'
-  downloadIframe.src = `https://192.168.212.52:8080/${url}`
+  downloadIframe.src = `${window.location.origin}/${url}`
   document.body.appendChild(downloadIframe)
 }
