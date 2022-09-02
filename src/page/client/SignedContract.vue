@@ -48,17 +48,18 @@
     </el-dialog>
     <el-dialog title="资料上传" :visible.sync="certificateVisible" width="600px" :close-on-click-modal="false"
       :close-on-press-escape="false">
-      <el-upload :action="action" list-type="picture-card"
-        :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+      <!-- <el-upload :action="action" list-type="picture-card" :on-preview="handlePictureCardPreview"
+        :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
+      </el-upload> -->
+      <el-upload class="upload-demo" :action="action" :on-preview="handlePictureCardPreview"
+        :on-remove="handleRemove" :file-list="fileList" list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
       </el-upload>
-      <el-dialog :visible.sync="dialogUpload" append-to-body>
-        <img width="100%" :src="dialogImageUrl" alt="">
-      </el-dialog>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="certificateVisible = false">取 消</el-button>
-        <el-button type="primary" @click="certificateSubmit">确 定</el-button>
-      </span> -->
+    </el-dialog>
+    <el-dialog :visible.sync="dialogUpload" append-to-body>
+      <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
     <el-dialog :title="titleCheck" :visible.sync="dialogVisible" width="600px" class="dialog-wrap"
       :close-on-click-modal="false" :close-on-press-escape="false">
@@ -80,6 +81,7 @@ export default {
   },
   data () {
     return {
+      fileList: [],
       dialogImageUrl: '',
       dialogUpload: false,
       dialogVisible: false,
@@ -129,7 +131,20 @@ export default {
     this.getList(this.current, this.size)
   },
   methods: {
+    getCertDetails (talentUuid) {
+      this.$get(`/talentManage/getCertDetails/${talentUuid}`).then(({ data }) => {
+        console.log(data)
+        if (data.success) {
+          this.fileList = data.data.forEach(item => {
+            item.name = item.attacthmentName
+            item.url = item.absolutePath
+          })
+        }
+      })
+    },
     handleRemove (file, fileList) {
+      const uuid = file.response.data.uuid
+      this.$get(`${window.location.origin}/talentManage/uploadData/${uuid}`)
       console.log(file, fileList)
     },
     handlePictureCardPreview (file) {
@@ -168,6 +183,7 @@ export default {
     details (row) {
       this.talentUuid = row.uuid
       this.action = `${window.location.origin}/talentManage/uploadData/${row.uuid}`
+      this.getCertDetails(row.uuid)
       this.certificateVisible = true
     },
     // 匹配合作
