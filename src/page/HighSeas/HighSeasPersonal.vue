@@ -134,7 +134,6 @@ export default {
       }
     },
     uploadSuccess (respon, file) {
-      const res = respon.data
       this.uploadBtnFlag = false
       if (!respon.success) {
         this.$message({
@@ -151,17 +150,8 @@ export default {
         return
       }
       // if (this.saveLog) {
-      const result = res.successNum > 0 ? '成功' : '失败'
-      this.$axios.log({
-        data: [file],
-        logTemplate: `导入|${this.modelName}(${file.name})`,
-        result: `${result}`
-      })
-      // }
-      this.successData.failNum = res.failNum
-      this.successData.successNum = res.successNum
-      this.successData.fileName = res.fileName || []
-      this.successData.licenseStatus = res.licenseStatus || ''
+      this.importDialogFlag = true
+      this.getList(this.current, this.size, this.searchKey)
       this.$refs.upload.uploadFiles = []
     },
     uploadError () {

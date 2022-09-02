@@ -134,7 +134,7 @@ export default {
         if (data.success) {
           data.data.forEach(item => {
             item.name = item.attacthmentName
-            item.url = item.absolutePath
+            item.url = item.staticPath
           })
           this.fileList = data.data
           console.log(this.fileList)
