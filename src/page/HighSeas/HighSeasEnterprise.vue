@@ -70,11 +70,11 @@ export default {
     },
     handleSizeChange (val) {
       this.size = val
-      this.getList(this.current, val)
+      this.getList(this.current, val, this.searchKey)
     },
     handleCurrentChange (val) {
       this.current = val
-      this.getList(val, this.size)
+      this.getList(val, this.size, this.searchKey)
     },
     transfer (row) {
       this.$confirm('确定要保护？', '提示', {
@@ -84,7 +84,7 @@ export default {
         this.$get(`/businessManage/protectBusiness/${row.uuid}`)
           .then((data) => {
             if (data.data.success) {
-              this.getList(this.current, this.size)
+              this.getList(this.current, this.size, this.searchKey)
               this.$message({
                 type: 'success',
                 message: '保护成功!'

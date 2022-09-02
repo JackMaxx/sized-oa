@@ -6,6 +6,11 @@
  -->
 <template>
   <div class="">
+    <div style="margin-bottom:16px;">
+      <el-input v-model="searchKey" placeholder="请输入" style="width:300px;"  @keyup.enter.native="searchAction">
+        <el-button slot="append" @click="searchAction">查询</el-button>
+      </el-input>
+    </div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="realName" label="人才姓名"></el-table-column>
       <el-table-column prop="professionStr" label="专业"></el-table-column>
@@ -102,6 +107,7 @@ export default {
       size: 10,
       total: 0,
       uuid: '',
+      searchKey: '',
       transForm: {
         beexpired: []
       },
@@ -125,19 +131,25 @@ export default {
     }
   },
   mounted () {
-    this.getList(this.current, this.size)
+    this.getList(this.current, this.size, this.searchKey)
   },
   methods: {
+    searchAction () {
+      this.getList(this.current, this.size, this.searchKey)
+    },
     check (row) {
       this.titleCheck = '查看'
       this.dialogVisible = true
       this.isShowCheck = true
       this.rowDataCheck = row
     },
-    getList (current, size) {
+    getList (current, size, searchKey) {
       const params = {
         current: current,
-        size: size
+        size: size,
+        condition: {
+          searchKey: searchKey
+        }
       }
       this.$post(`/talentManage/getPageCoopList`, params).then(({ data }) => {
         if (data.success) {
@@ -150,11 +162,11 @@ export default {
     },
     handleSizeChange (val) {
       this.size = val
-      this.getList(this.current, val)
+      this.getList(this.current, val, this.searchKey)
     },
     handleCurrentChange (val) {
       this.current = val
-      this.getList(val, this.size)
+      this.getList(val, this.size, this.searchKey)
     },
     information (row) {
       this.uuid = row.uuid
@@ -218,7 +230,7 @@ export default {
           params.talentUuid = this.uuid
           this.$post('/orderInfo/registerInfo', params).then(({ data }) => {
             if (data.success) {
-              this.getList(this.current, this.size)
+              this.getList(this.current, this.size, this.searchKey)
               this.informationVisible = false
               this.$message.success(data.msg)
             } else {
@@ -236,7 +248,7 @@ export default {
           this.$get(`/talentManage/conversionExpired/${this.uuid}`).then(({ data }) => {
             if (data.success) {
               this.$message.success(data.msg)
-              this.getList(this.current, this.size)
+              this.getList(this.current, this.size, this.searchKey)
               this.beexpiredVisible = false
             } else {
               this.$message.error(data.msg)

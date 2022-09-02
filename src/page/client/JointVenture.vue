@@ -6,6 +6,11 @@
  -->
 <template>
   <div class="">
+    <div style="margin-bottom:16px;">
+      <el-input v-model="searchKey" placeholder="请输入" style="width:300px;"  @keyup.enter.native="searchAction">
+        <el-button slot="append" @click="searchAction">查询</el-button>
+      </el-input>
+    </div>
     <el-table :data="tableData" style="width: 100%" :span-method="arraySpanMethod" border>
       <el-table-column prop="businessName" label="公司名称"></el-table-column>
       <el-table-column prop="professionStr" label="专业"></el-table-column>
@@ -66,6 +71,7 @@ export default {
       informationVisible: false,
       isShow: false,
       tableData: [],
+      searchKey: '',
       currentPage4: 1,
       current: 1,
       size: 10,
@@ -74,9 +80,12 @@ export default {
     }
   },
   mounted () {
-    this.getList(this.current, this.size)
+    this.getList(this.current, this.size, this.searchKey)
   },
   methods: {
+    searchAction () {
+      this.getList(this.current, this.size, this.searchKey)
+    },
     check (row) {
       this.titleCheck = '查看'
       this.dialogVisible = true
@@ -118,10 +127,13 @@ export default {
         }
       }
     },
-    getList (current, size) {
+    getList (current, size, searchKey) {
       const params = {
         current: current,
-        size: size
+        size: size,
+        condition: {
+          searchKey: searchKey
+        }
       }
       this.$post(`/businessManage/getPageCoopList`, params).then(({ data }) => {
         if (data.success) {
@@ -134,11 +146,11 @@ export default {
     },
     handleSizeChange (val) {
       this.size = val
-      this.getList(this.current, val)
+      this.getList(this.current, val, this.searchKey)
     },
     handleCurrentChange (val) {
       this.current = val
-      this.getList(val, this.size)
+      this.getList(val, this.size, this.searchKey)
     },
     information (row) {
       this.isShow = true
@@ -164,7 +176,7 @@ export default {
         this.$get(`/orderInfo/disuse/${row.uuid}/${row.coopTalentUuid}`)
           .then((data) => {
             if (data.data.success) {
-              this.getList(this.current, this.size)
+              this.getList(this.current, this.size, this.searchKey)
               this.$message({
                 type: 'success',
                 message: data.data.msg
