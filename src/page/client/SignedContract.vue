@@ -50,7 +50,7 @@
       :close-on-press-escape="false" class="dialog-wrap">
       <el-scrollbar>
         <el-upload class="upload-demo" :action="action" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
-          :file-list="fileList" list-type="picture">
+          :file-list="fileList" list-type="picture" :before-upload="onChangeHandler">
           <el-button size="small" type="primary">点击上传</el-button>
           <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
         </el-upload>
@@ -92,6 +92,7 @@ export default {
       certificateForm: {
         qualifications: []
       },
+      fileTypes: ['jpg', 'png', 'jpeg', 'bmp', 'gif', 'tif'],
       action: '',
       currentPage4: 1,
       current: 1,
@@ -145,6 +146,18 @@ export default {
       const uuid = file.response.data.uuid
       this.$get(`${window.location.origin}/talentManage/uploadData/${uuid}`)
       console.log(file, fileList)
+    },
+    onChangeHandler (file) {
+      console.log(file)
+      if (this.fileTypes) {
+        const message = `请选择${this.fileTypes.toString().replace(',', '或')}类型的文件`
+        if (this.fileTypes.indexOf(file.type) === -1) {
+          this.$message({
+            type: 'error',
+            message: message
+          })
+        }
+      }
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url

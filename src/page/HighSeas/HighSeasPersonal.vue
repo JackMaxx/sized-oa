@@ -150,7 +150,7 @@ export default {
         return
       }
       // if (this.saveLog) {
-      this.importDialogFlag = true
+      this.importDialogFlag = false
       this.getList(this.current, this.size, this.searchKey)
       this.$refs.upload.uploadFiles = []
     },
