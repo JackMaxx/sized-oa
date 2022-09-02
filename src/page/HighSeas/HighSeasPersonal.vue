@@ -6,11 +6,8 @@
  -->
 <template>
   <div class="high-seas">
-    <div class="m-bottom10">
-      <el-button type="primary" icon="el-icon-plus" @click="batchImport">批量导入</el-button>
-      <!-- <el-button type="primary" icon="el-icon-plus" @click="enterpriselAdd">企业添加</el-button> -->
-    </div>
     <div style="margin-bottom:16px;">
+      <el-button type="primary" icon="el-icon-plus" @click="batchImport" style="margin-right: 30px;">批量导入</el-button>
       <el-input v-model="searchKey" placeholder="请输入专业" style="width:300px;" @keyup.enter.native="searchAction">
         <el-button slot="append" @click="searchAction">查询</el-button>
       </el-input>
