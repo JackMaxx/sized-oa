@@ -5,7 +5,7 @@
  * @Date: 2022.6.23
  -->
 <template>
-  <div class="">
+  <div class="updata">
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="realName" label="人才姓名"></el-table-column>
       <el-table-column prop="professionStr" label="专业"></el-table-column>
@@ -47,16 +47,14 @@
       </span>
     </el-dialog>
     <el-dialog title="资料上传" :visible.sync="certificateVisible" width="600px" :close-on-click-modal="false"
-      :close-on-press-escape="false">
-      <!-- <el-upload :action="action" list-type="picture-card" :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove">
-        <i class="el-icon-plus"></i>
-      </el-upload> -->
-      <el-upload class="upload-demo" :action="action" :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove" :file-list="fileList" list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
-        <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-      </el-upload>
+      :close-on-press-escape="false" class="dialog-wrap">
+      <el-scrollbar>
+        <el-upload class="upload-demo" :action="action" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+          :file-list="fileList" list-type="picture">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+        </el-upload>
+      </el-scrollbar>
     </el-dialog>
     <el-dialog :visible.sync="dialogUpload" append-to-body>
       <img width="100%" :src="dialogImageUrl" alt="">
@@ -133,12 +131,13 @@ export default {
   methods: {
     getCertDetails (talentUuid) {
       this.$get(`/talentManage/getCertDetails/${talentUuid}`).then(({ data }) => {
-        console.log(data)
         if (data.success) {
-          this.fileList = data.data.forEach(item => {
+          data.data.forEach(item => {
             item.name = item.attacthmentName
             item.url = item.absolutePath
           })
+          this.fileList = data.data
+          console.log(this.fileList)
         }
       })
     },
@@ -244,6 +243,6 @@ export default {
   display: flex;
 }
 .upload-demo {
-  display: flex;
+  padding-bottom: 20px;
 }
 </style>
