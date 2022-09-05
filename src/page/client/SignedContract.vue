@@ -145,10 +145,8 @@ export default {
     handleRemove (file, fileList) {
       const uuid = file.response.data.uuid
       this.$get(`${window.location.origin}/talentManage/uploadData/${uuid}`)
-      console.log(file, fileList)
     },
     onChangeHandler (file) {
-      console.log(file)
       if (this.fileTypes) {
         const message = `请选择${this.fileTypes.toString().replace(',', '或')}类型的文件`
         if (this.fileTypes.indexOf(file.type) === -1) {
@@ -156,6 +154,7 @@ export default {
             type: 'error',
             message: message
           })
+          return false
         }
       }
     },
@@ -219,24 +218,6 @@ export default {
               this.$message.success(data.msg)
               this.getList(this.current, this.size)
               this.transferOutVisible = false
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        }
-      })
-    },
-    // 资料上传
-    certificateSubmit () {
-      this.$refs.taskForm.validate((valid) => {
-        if (valid) {
-          const params = this.taskForm
-          console.log(params)
-          this.$post(`/talentManage/uptCertDetails`, params).then(({ data }) => {
-            if (data.success) { // 记住用户名
-              this.$message.success(data.msg)
-              this.getList(this.current, this.size)
-              this.certificateVisible = false
             } else {
               this.$message.error(data.msg)
             }
