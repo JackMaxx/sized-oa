@@ -143,8 +143,9 @@ export default {
       })
     },
     handleRemove (file, fileList) {
-      const uuid = file.response.data.uuid
-      this.$get(`${window.location.origin}/talentManage/uploadData/${uuid}`)
+      console.log(file)
+      const uuid = file.uuid
+      this.$get(`/talentManage/delData/${uuid}`)
     },
     onChangeHandler (file) {
       if (this.fileTypes) {
