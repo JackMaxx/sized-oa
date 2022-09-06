@@ -138,19 +138,20 @@ export default {
             item.url = item.staticPath
           })
           this.fileList = data.data
-          console.log(this.fileList)
         }
       })
     },
     handleRemove (file, fileList) {
-      console.log(file)
       const uuid = file.uuid
       this.$get(`/talentManage/delData/${uuid}`)
     },
     onChangeHandler (file) {
       if (this.fileTypes) {
+        const fileName = file.name
+          .substring(file.name.lastIndexOf('.') + 1)
+          .toLowerCase()
         const message = `请选择${this.fileTypes.toString().replace(',', '或')}类型的文件`
-        if (this.fileTypes.indexOf(file.type) === -1) {
+        if (this.fileTypes.indexOf(fileName) === -1) {
           this.$message({
             type: 'error',
             message: message
