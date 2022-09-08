@@ -60,14 +60,14 @@
     <el-dialog title="修改密码" :visible.sync="changePasswordVisible" width="600px" class="dialog-wrap"
       :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :model="map" :rules="rules" ref="updatePwd" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="当前密码：" prop="oldPwd">
+        <!-- <el-form-item label="当前密码：" prop="oldPwd">
           <el-input type="password" v-model="map.oldPwd" style="width: 414px" placeholder="请输入"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="新密码：" prop="pwd">
-          <el-input type="password" v-model="map.pwd" style="width: 414px" placeholder="请输入"></el-input>
+          <el-input type="password" v-model="map.pwd" style="width: 414px" placeholder="请输入" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码：" prop="cfmNewPassword">
-          <el-input type="password" v-model="map.cfmNewPassword" style="width: 414px" placeholder="请输入"></el-input>
+          <el-input type="password" v-model="map.cfmNewPassword" style="width: 414px" placeholder="请输入" show-password></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -120,8 +120,9 @@ export default {
       },
       rowData: null,
       targetUuid: '',
+      uuid: '',
       map: {
-        oldPwd: '',
+        // oldPwd: '',
         pwd: ''
       },
       rules: {
@@ -174,7 +175,8 @@ export default {
       this.rowData = row
     },
     // 修改密码
-    editPassword () {
+    editPassword (row) {
+      this.uuid = row.uuid
       this.changePasswordVisible = true
     },
     // 保存修改密码
@@ -184,11 +186,13 @@ export default {
           // eslint-disable-next-line new-cap
           const encrypt = new base64()
           const send = {
-            oldPwd: encrypt.encode(this.map.oldPwd),
-            pwd: encrypt.encode(this.map.pwd)
+            // oldPwd: encrypt.encode(this.map.oldPwd),
+            pwd: encrypt.encode(this.map.pwd),
+            userUuid: this.uuid
           }
-          this.$axios.post('/suninfo-userasset/userinfo/updateUserPwd', send).then(({ data }) => {
+          this.$post('/userInfo/updateUserPwd', send).then(({ data }) => {
             if (data.success) {
+              this.changePasswordVisible = false
               this.$message({
                 type: 'success',
                 message: data.msg

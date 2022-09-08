@@ -3,7 +3,7 @@
  * Created by alex on 2017/10/16.
  */
 
-export default function base64 () {
+export function base64 () {
   // private method for UTF-8 encoding
   let _utf8encode = function (string) {
     string = string.replace(/\r\n/g, '\n')
