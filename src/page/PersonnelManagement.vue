@@ -13,7 +13,7 @@
       <el-table-column prop="realName" label="人员姓名"></el-table-column>
       <el-table-column prop="entryTime" label="入职时间"></el-table-column>
       <el-table-column prop="loginName" label="账号"></el-table-column>
-      <el-table-column label="操作" width="160">
+      <el-table-column label="操作" width="140">
         <template slot-scope="scope">
           <el-button @click="edit(scope.row)" type="text" size="small">
             编辑
@@ -21,9 +21,9 @@
           <el-button @click="transfer(scope.row)" type="text" size="small">
             转出
           </el-button>
-          <el-button @click="editPassword(scope.row)" type="text" size="small">
+          <!-- <el-button @click="editPassword(scope.row)" type="text" size="small">
             修改密码
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
