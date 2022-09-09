@@ -14,7 +14,7 @@
     <el-table :data="tableData" style="width: 100%" :span-method="arraySpanMethod" border>
       <el-table-column prop="businessName" label="公司名称"></el-table-column>
       <el-table-column prop="professionStr" label="专业"></el-table-column>
-      <el-table-column prop="coopTalentName" label="合作对象"></el-table-column>
+      <el-table-column prop="coopUserName" label="合作对象"></el-table-column>
       <el-table-column label="操作" width="240">
         <template slot-scope="scope">
           <el-button @click="check(scope.row)" type="text" size="small">
