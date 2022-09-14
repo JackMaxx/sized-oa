@@ -34,7 +34,7 @@
         <el-input type="textarea" v-model="taskForm.remark" :disabled="isShow" placeholder="请填写"></el-input>
       </el-form-item>
       <el-form-item label="合作对象：">
-        <el-input v-model="taskForm.coopObjUuid" :disabled="isShow" placeholder="请填写"></el-input>
+        <el-input v-model="taskForm.coopObjName" :disabled="isShow" placeholder="请填写"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -52,7 +52,7 @@ export default {
         bankAccount: null,
         bankName: '',
         remark: '',
-        coopObjUuid: ''
+        coopObjName: ''
       },
       rules: {
         amount: [{ required: true, message: '请输入', trigger: 'blur' }],

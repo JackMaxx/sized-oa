@@ -234,8 +234,8 @@ export default {
       if (row.paymentUuid) {
         this.$get(`/talentManage/getPaymentInfo/${row.uuid}`).then(({ data }) => {
           if (data.success) {
-            this.titlePay = '查看付款'
-            this.isPayShow = true
+            this.titlePay = '编辑付款'
+            this.isPayShow = false
             this.dialogPayment = true
             this.rowPayData = data.data
           } else {
