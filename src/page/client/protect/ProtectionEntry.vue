@@ -21,9 +21,9 @@
           <el-button @click="cancel(scope.row)" type="text" size="small" >
             取消保护
           </el-button>
-          <el-button @click="note(scope.row)" type="text" size="small">
+          <!-- <el-button @click="note(scope.row)" type="text" size="small">
             小记
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
