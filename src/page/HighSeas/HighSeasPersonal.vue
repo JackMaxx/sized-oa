@@ -100,7 +100,7 @@ export default {
         this.$get(`/talentManage/protectTalent/${row.uuid}`)
           .then((data) => {
             if (data.data.success) {
-              this.getList(this.current, this.size)
+              this.getList(this.current, this.size, this.searchKey)
               this.$message({
                 type: 'success',
                 message: '保护成功!'
