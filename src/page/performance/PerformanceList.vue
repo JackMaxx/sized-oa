@@ -45,8 +45,8 @@ export default {
   methods: {
     getList () {
       const params = {
-        startTime: timeStamp(this.startTime),
-        endTime: timeStamp(this.endTime)
+        startTime: timeStamp(this.startTime + ' 00:00:00'),
+        endTime: timeStamp(this.endTime + ' 23:59:59')
       }
       this.$post(`/performanceManage/getList`, params).then(({ data }) => {
         console.log(data)
@@ -90,9 +90,9 @@ export default {
     },
     getDateRangeStart (value) {
       const start = this.startTime
-        ? new Date(this.startTime + ' 00:00:00').getTime() / 1000
+        ? new Date(this.startTime).getTime() / 1000
         : 0
-      const end = this.endTime ? new Date(this.endTime + ' 23:59:59').getTime() / 1000 : 0
+      const end = this.endTime ? new Date(this.endTime).getTime() / 1000 : 0
       if (end) {
         if (start >= end) {
           this.$message({
@@ -105,9 +105,9 @@ export default {
     },
     getDateRangeEnd (value) {
       const start = this.startTime
-        ? new Date(this.startTimeStr + ' 00:00:00').getTime() / 1000
+        ? new Date(this.startTimeStr).getTime() / 1000
         : 0
-      const end = this.endTime ? new Date(this.endTime + ' 23:59:59').getTime() / 1000 : 0
+      const end = this.endTime ? new Date(this.endTime).getTime() / 1000 : 0
       if (start) {
         if (start >= end) {
           this.$message({
